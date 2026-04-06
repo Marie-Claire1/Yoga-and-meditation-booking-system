@@ -20,11 +20,11 @@ A full-stack web application for managing yoga and mindfulness class bookings, b
 
 | Role | Email | Password |
 |------|-------|----------|
-| Organiser | marie-claire@yogastudio.com | password123 |
-| Instructor | ava@yogastudio.com | password123 |
-| Instructor | ben@yogastudio.com | password123 |
-| Student | sarah@student.local | password123 |
-| Student | stewart@student.local | password123 |
+| Organiser | marie-claire@yogastudio.com | *********** |
+| Instructor | ava@yogastudio.com | *********** |
+| Instructor | ben@yogastudio.com | *********** |
+| Student | sarah@student.local | *********** |
+| Student | stewart@student.local | *********** |
 
 ## Running Tests
 

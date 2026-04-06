@@ -1,4 +1,3 @@
-// routes/courses.js
 import { Router } from "express";
 import { CourseModel } from "../models/courseModel.js";
 import { SessionModel } from "../models/sessionModel.js";

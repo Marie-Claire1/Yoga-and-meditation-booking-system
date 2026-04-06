@@ -1,0 +1,100 @@
+{{> head}}
+{{> header}}
+
+<h1>My Bookings</h1>
+<p>Welcome back, {{userName}}.</p>
+
+{{#successMessage}}
+<div class="alert alert-success">
+  {{successMessage}}
+</div>
+{{/successMessage}}
+
+{{^hasAnyBookings}}
+{{^hasCancelledBookings}}
+<div class="empty-state">
+  <p>You have no bookings yet.</p>
+  <a href="/courses" class="btn btn-primary">Browse courses</a>
+</div>
+{{/hasCancelledBookings}}
+{{/hasAnyBookings}}
+
+{{#hasCourseBookings}}
+<section class="bookings-section">
+  <h2>Course enrolments</h2>
+  {{#courseBookings}}
+  <div class="card booking-card">
+    <div class="card-body">
+      <div class="card-title-row">
+        <h3>{{courseTitle}}</h3>
+        <span class="badge">Confirmed</span>
+      </div>
+      <p class="card-meta">Level: {{level}}</p>
+      <p class="card-meta">Location: {{location}}</p>
+      <p class="card-meta">Total sessions: {{totalSessions}}</p>
+      {{#hasNextSession}}
+      <p class="card-meta">Next session: <strong>{{nextSession}}</strong></p>
+      {{/hasNextSession}}
+      <p class="card-meta">Enrolled: {{createdAt}}</p>
+      <div class="card-actions">
+        <a href="/courses/{{courseId}}" class="btn btn-sm">View course</a>
+        <form action="/bookings/{{id}}/cancel" method="POST" class="inline-form"
+          onsubmit="return confirm('Are you sure you want to cancel this enrolment?')">
+          <button type="submit" class="btn btn-sm btn-danger">Cancel enrolment</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  {{/courseBookings}}
+</section>
+{{/hasCourseBookings}}
+
+{{#hasDropInBookings}}
+<section class="bookings-section">
+  <h2>Single session bookings</h2>
+  {{#dropInBookings}}
+  <div class="card booking-card">
+    <div class="card-body">
+      <div class="card-title-row">
+        <h3>{{courseTitle}}</h3>
+        <span class="badge">Single session</span>
+      </div>
+      <p class="card-meta">Level: {{level}}</p>
+      {{#session}}
+      <p class="card-meta">Date: {{start}}</p>
+      <p class="card-meta">Location: {{location}}</p>
+      {{/session}}
+      <p class="card-meta">Booked: {{createdAt}}</p>
+      <div class="card-actions">
+        <a href="/courses/{{courseId}}" class="btn btn-sm">View course</a>
+        <form action="/bookings/{{id}}/cancel" method="POST" class="inline-form"
+          onsubmit="return confirm('Are you sure you want to cancel this session booking?')">
+          <button type="submit" class="btn btn-sm btn-danger">Cancel booking</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  {{/dropInBookings}}
+</section>
+{{/hasDropInBookings}}
+
+{{#hasCancelledBookings}}
+<section class="bookings-section">
+  <h2>Cancelled bookings</h2>
+  {{#cancelledBookings}}
+  <div class="card booking-card booking-cancelled">
+    <div class="card-body">
+      <div class="card-title-row">
+        <h3>{{courseTitle}}</h3>
+        <span class="badge badge-cancelled">Cancelled</span>
+      </div>
+      <p class="card-meta">Level: {{level}}</p>
+      <p class="card-meta">Originally booked: {{createdAt}}</p>
+      <a href="/courses/{{courseId}}" class="btn btn-sm">View course</a>
+    </div>
+  </div>
+  {{/cancelledBookings}}
+</section>
+{{/hasCancelledBookings}}
+
+{{> footer}}

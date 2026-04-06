@@ -1,0 +1,110 @@
+{{> head}}
+{{> header}}
+
+<main class="container">
+  <div class="page-header">
+    <h1>{{#isNew}}Add course{{/isNew}}{{^isNew}}Edit course{{/isNew}}</h1>
+    <a href="/organiser" class="btn btn-sm">Back to dashboard</a>
+  </div>
+
+  <form action="/organiser/courses/{{#isNew}}new{{/isNew}}{{^isNew}}{{course._id}}/edit{{/isNew}}" method="POST" class="form-card" novalidate>
+
+    <div class="form-group">
+      <label for="title">Course title</label>
+      <input type="text" id="title" name="title" value="{{course.title}}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea id="description" name="description" rows="4" required>{{course.description}}</textarea>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="level">Level</label>
+        <select id="level" name="level">
+          <option value="beginner">Beginner</option>
+          <option value="intermediate">Intermediate</option>
+          <option value="advanced">Advanced</option>
+          <option value="all">All levels</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="type">Type</label>
+        <select id="type" name="type">
+          <option value="WEEKLY_BLOCK">Weekly block</option>
+          <option value="WEEKEND_WORKSHOP">Weekend workshop</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="startDate">Start date</label>
+        <input type="date" id="startDate" name="startDate" value="{{course.startDate}}" required>
+      </div>
+      <div class="form-group">
+        <label for="endDate">End date</label>
+        <input type="date" id="endDate" name="endDate" value="{{course.endDate}}" required>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="price">Course price (&pound;)</label>
+        <input type="number" id="price" name="price" value="{{course.price}}" min="0" step="0.01" required>
+      </div>
+      <div class="form-group">
+        <label for="dropInPrice">Drop-in price (&pound;)</label>
+        <input type="number" id="dropInPrice" name="dropInPrice" value="{{course.dropInPrice}}" min="0" step="0.01">
+      </div>
+    </div>
+
+    <div class="form-group form-check">
+      <input type="checkbox" id="allowDropIn" name="allowDropIn" {{#course.allowDropIn}}checked{{/course.allowDropIn}}>
+      <label for="allowDropIn">Allow drop-in bookings</label>
+    </div>
+
+    <div class="form-group">
+      <label for="instructorId">Instructor</label>
+      <select id="instructorId" name="instructorId">
+        {{#instructors}}
+        <option value="{{_id}}">{{name}}</option>
+        {{/instructors}}
+      </select>
+      <input type="hidden" name="instructorName" id="instructorName">
+    </div>
+
+    <div class="form-group">
+      <label for="location">Location</label>
+      <input type="text" id="location" name="location" value="{{course.location}}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="image">Image URL <span style="font-weight:400;color:var(--muted)">(optional — leave blank to auto-assign)</span></label>
+      <input type="url" id="image" name="image" value="{{course.image}}" placeholder="https://images.unsplash.com/...">
+      {{#course.image}}
+      <img src="{{course.image}}" alt="Course image preview" style="margin-top:0.75rem;width:100%;max-height:160px;object-fit:cover;border-radius:8px;">
+      {{/course.image}}
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">
+        {{#isNew}}Create course{{/isNew}}{{^isNew}}Save changes{{/isNew}}
+      </button>
+      <a href="/organiser" class="btn">Cancel</a>
+    </div>
+  </form>
+</main>
+
+<script>
+  const sel = document.getElementById('instructorId');
+  const inp = document.getElementById('instructorName');
+  function syncName() {
+    inp.value = sel.options[sel.selectedIndex]?.text ?? '';
+  }
+  sel.addEventListener('change', syncName);
+  syncName();
+</script>
+
+{{> footer}}

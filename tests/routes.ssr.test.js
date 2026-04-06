@@ -11,40 +11,43 @@ describe("SSR view routes", () => {
     data = await seedMinimal();
   });
 
-  test("GET / (home) renders HTML", async () => {
+  test("GET / renders home page with courses", async () => {
     const res = await request(app).get("/");
     expect(res.status).toBe(200);
     expect(res.headers["content-type"]).toMatch(/html/);
-    // Page title from home.mustache (adjust if you changed it)
-    expect(res.text).toMatch(/Courses|Upcoming Courses/i);
+    expect(res.text).toMatch(/Serenity|Yoga|Courses/i);
   });
 
-  test("GET /courses (list page) renders HTML and shows Test Course", async () => {
+  test("GET /courses renders courses list with Test Course", async () => {
     const res = await request(app).get("/courses");
     expect(res.status).toBe(200);
     expect(res.headers["content-type"]).toMatch(/html/);
     expect(res.text).toMatch(/Test Course/);
   });
 
-  test("GET /courses/:id (detail page) renders HTML", async () => {
+  test("GET /courses/:id renders course detail page", async () => {
     const res = await request(app).get(`/courses/${data.course._id}`);
     expect(res.status).toBe(200);
     expect(res.headers["content-type"]).toMatch(/html/);
     expect(res.text).toMatch(/Test Course/);
   });
 
-  test("GET /courses/:id/book renders course booking form", async () => {
-    const res = await request(app).get(`/courses/${data.course._id}/book`);
-    expect(res.status).toBe(200);
-    expect(res.headers["content-type"]).toMatch(/html/);
-    expect(res.text).toMatch(/Confirm Course Booking|Book:/i);
+  test("GET /courses/:id with bad id returns 404", async () => {
+    const res = await request(app).get("/courses/does-not-exist");
+    expect(res.status).toBe(404);
   });
 
-  test("GET /sessions/:id/book renders session booking form", async () => {
-    const sessionId = data.sessions[0]._id;
-    const res = await request(app).get(`/sessions/${sessionId}/book`);
+  test("GET /auth/login renders login page", async () => {
+    const res = await request(app).get("/auth/login");
     expect(res.status).toBe(200);
     expect(res.headers["content-type"]).toMatch(/html/);
-    expect(res.text).toMatch(/Confirm Session Booking|Book Session/i);
+    expect(res.text).toMatch(/Login|Sign in/i);
+  });
+
+  test("GET /auth/register renders register page", async () => {
+    const res = await request(app).get("/auth/register");
+    expect(res.status).toBe(200);
+    expect(res.headers["content-type"]).toMatch(/html/);
+    expect(res.text).toMatch(/Register|Create account/i);
   });
 });

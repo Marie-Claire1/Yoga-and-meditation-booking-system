@@ -19,56 +19,79 @@ export async function resetDb() {
     bookingsDb.remove({}, { multi: true }),
   ]);
   await Promise.all([
-    usersDb.persistence.compactDatafile(),
-    coursesDb.persistence.compactDatafile(),
-    sessionsDb.persistence.compactDatafile(),
-    bookingsDb.persistence.compactDatafile(),
+    usersDb.compactDatafile(),
+    coursesDb.compactDatafile(),
+    sessionsDb.compactDatafile(),
+    bookingsDb.compactDatafile(),
   ]);
 }
 
-// Seed a minimal dataset used by multiple tests
 export async function seedMinimal() {
-  const student = await UserModel.create({
-    name: "Test Student",
-    email: "student@test.local",
-    role: "student",
-  });
-  const instructor = await UserModel.create({
-    name: "Test Instructor",
-    email: "instructor@test.local",
-    role: "instructor",
-  });
+  const organiser = await UserModel.register(
+    "Test Organiser",
+    "organiser@test.local",
+    "password123",
+    "organiser",
+    "full"
+  );
+  const instructor = await UserModel.register(
+    "Test Instructor",
+    "instructor@test.local",
+    "password123",
+    "instructor",
+    "full"
+  );
+  const student = await UserModel.register(
+    "Test Student",
+    "student@test.local",
+    "password123",
+    "student",
+    "full"
+  );
 
   const course = await CourseModel.create({
     title: "Test Course",
     level: "beginner",
     type: "WEEKLY_BLOCK",
     allowDropIn: true,
-    startDate: "2026-02-02",
-    endDate: "2026-04-20",
+    startDate: "2026-04-07",
+    endDate: "2026-06-23",
     instructorId: instructor._id,
+    instructorName: instructor.name,
     sessionIds: [],
-    description: "A test course for E2E route testing.",
+    description: "A test course for testing.",
+    price: 100,
+    dropInPrice: 12,
+    location: "Test Studio",
   });
 
-  // Two sessions to keep tests fast
   const s1 = await SessionModel.create({
     courseId: course._id,
-    startDateTime: new Date("2026-02-02T18:30:00").toISOString(),
-    endDateTime: new Date("2026-02-02T19:45:00").toISOString(),
+    startDateTime: new Date("2026-04-07T18:30:00").toISOString(),
+    endDateTime: new Date("2026-04-07T19:45:00").toISOString(),
     capacity: 18,
     bookedCount: 0,
+    location: "Test Studio",
   });
 
   const s2 = await SessionModel.create({
     courseId: course._id,
-    startDateTime: new Date("2026-02-09T18:30:00").toISOString(),
-    endDateTime: new Date("2026-02-09T19:45:00").toISOString(),
+    startDateTime: new Date("2026-04-14T18:30:00").toISOString(),
+    endDateTime: new Date("2026-04-14T19:45:00").toISOString(),
     capacity: 18,
     bookedCount: 0,
+    location: "Test Studio",
   });
 
   await CourseModel.update(course._id, { sessionIds: [s1._id, s2._id] });
 
-  return { student, instructor, course, sessions: [s1, s2] };
+  return { organiser, instructor, student, course, sessions: [s1, s2] };
+}
+
+export async function loginAs(request, app, email, password) {
+  const res = await request(app)
+    .post("/auth/login")
+    .send(`email=${email}&password=${password}`)
+    .set("Content-Type", "application/x-www-form-urlencoded");
+  return res.headers["set-cookie"];
 }

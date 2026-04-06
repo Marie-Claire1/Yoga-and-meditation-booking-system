@@ -1,5 +1,3 @@
-
-// routes/sessions.js
 import { Router } from 'express';
 import { SessionModel } from '../models/sessionModel.js';
 

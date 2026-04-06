@@ -1,0 +1,71 @@
+{{> head}}
+{{> header}}
+
+<main class="container">
+  <div class="page-header">
+    <h1>User management</h1>
+    <a href="/organiser" class="btn btn-sm">Back to dashboard</a>
+  </div>
+
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Membership</th>
+        <th>Role</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#users}}
+      <tr>
+        <td>{{name}}</td>
+        <td>{{email}}</td>
+        <td>
+          <form action="/organiser/users/{{id}}/membership" method="POST" class="inline-form">
+            <select name="membershipType" onchange="this.form.submit()">
+              <option value="full" {{#isFullPrice}}selected{{/isFullPrice}}>Full price</option>
+              <option value="student" {{#isMemberStudent}}selected{{/isMemberStudent}}>Student (20% off)</option>
+            </select>
+          </form>
+          {{#needsVerification}}
+          <span class="badge badge-warning">Pending verification</span>
+          {{/needsVerification}}
+          {{#isMemberStudent}}
+          {{^needsVerification}}
+          <span class="badge badge-success">Verified</span>
+          {{/needsVerification}}
+          {{/isMemberStudent}}
+        </td>
+        <td>
+          <form action="/organiser/users/{{id}}/role" method="POST" class="inline-form">
+            <select name="role" onchange="this.form.submit()">
+              <option value="student"    {{#isStudent}}selected{{/isStudent}}>Student</option>
+              <option value="instructor" {{#isInstructor}}selected{{/isInstructor}}>Instructor</option>
+              <option value="organiser"  {{#isOrganiser}}selected{{/isOrganiser}}>Organiser</option>
+            </select>
+          </form>
+        </td>
+        <td>
+          {{#needsVerification}}
+          <form action="/organiser/users/{{id}}/verify" method="POST" class="inline-form">
+            <button type="submit" class="btn btn-sm btn-primary">Verify student</button>
+          </form>
+          {{/needsVerification}}
+          <form action="/organiser/users/{{id}}/delete" method="POST" class="inline-form"
+            onsubmit="return confirm('Delete user {{name}}? This cannot be undone.')">
+            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {{/users}}
+    </tbody>
+  </table>
+
+  {{^users}}
+  <p class="empty-state">No other users found.</p>
+  {{/users}}
+</main>
+
+{{> footer}}

@@ -1,0 +1,43 @@
+{{> head}}
+{{> header}}
+
+<main class="container">
+  <div class="page-header">
+    <h1>{{#isNew}}Add session{{/isNew}}{{^isNew}}Edit session{{/isNew}}</h1>
+    <a href="/organiser/courses/{{course.id}}/sessions" class="btn btn-sm">Back to sessions</a>
+  </div>
+  <p class="subheading">Course: <strong>{{course.title}}</strong></p>
+
+  <form action="/organiser/courses/{{course.id}}/sessions/{{#isNew}}new{{/isNew}}{{^isNew}}{{session.id}}/edit{{/isNew}}" method="POST" class="form-card">
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="startDateTime">Start date &amp; time</label>
+        <input type="datetime-local" id="startDateTime" name="startDateTime" value="{{session.startDateTime}}" required>
+      </div>
+      <div class="form-group">
+        <label for="endDateTime">End date &amp; time</label>
+        <input type="datetime-local" id="endDateTime" name="endDateTime" value="{{session.endDateTime}}" required>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="capacity">Capacity</label>
+      <input type="number" id="capacity" name="capacity" value="{{session.capacity}}" min="1" required>
+    </div>
+
+    <div class="form-group">
+      <label for="location">Location</label>
+      <input type="text" id="location" name="location" value="{{session.location}}" required>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">
+        {{#isNew}}Add session{{/isNew}}{{^isNew}}Save changes{{/isNew}}
+      </button>
+      <a href="/organiser/courses/{{course.id}}/sessions" class="btn">Cancel</a>
+    </div>
+  </form>
+</main>
+
+{{> footer}}

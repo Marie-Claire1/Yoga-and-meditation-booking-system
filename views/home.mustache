@@ -1,26 +1,62 @@
-
 {{> head}}
 {{> header}}
-<h1>Upcoming Courses</h1>
 
-<div class="cards">
-  {{#courses}}
-  <article class="card">
-    <h2>/courses/{{title}}</a></h2>
-    <p class="muted">
-      Level: {{level}} • Type: {{type}} {{#allowDropIn}}• Drop-in OK{{/allowDropIn}}
-    </p>
-    <p>{{description}}</p>
-    <p class="muted">Dates: {{startDate}}  {{endDate}}</p>
-    <p class="muted">Next session: {{nextSession}} • Sessions: {{sessionsCount}}</p>
-    <p>/courses/View &amp; Book</a></p>
-  </article>
-  {{/courses}}
+<section class="hero">
+  <div class="hero-image"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Yoga &amp; Mindfulness Studio</p>
+    <h1>Find Your <em>Stillness</em></h1>
+    <p class="hero-sub">A sanctuary for every body. Weekly classes and transformative weekend workshops guided by expert instructors.</p>
+    <div class="hero-actions">
+      <a href="/courses" class="btn btn-hero">Explore courses &rarr;</a>
+      <a href="/auth/register" class="btn btn-hero-outline">Join us</a>
+    </div>
+  </div>
+</section>
 
-  {{^courses}}
-    <p>No courses available yet.</p>
-  {{/courses}}
+<div class="wrap">
+  <div class="section-title">
+    <p class="section-eyebrow">What we offer</p>
+    <h2>Upcoming courses</h2>
+    <p>From gentle beginners sessions to advanced intensive workshops — find the practice that speaks to you.</p>
+  </div>
+
+  <div class="cards">
+    {{#courses}}
+    <article class="card">
+      {{#image}}
+      <div class="card-image">
+        <img src="{{image}}" alt="{{title}}" loading="lazy">
+        <span class="card-type-badge">{{type}}</span>
+      </div>
+      {{/image}}
+      {{^image}}
+      <div class="card-image-placeholder">🧘</div>
+      {{/image}}
+      <div class="card-body">
+        <div class="card-level-price">
+          <span class="level-badge {{level}}">{{level}}</span>
+          <span class="card-price">&pound;{{price}}</span>
+        </div>
+        <h2><a href="/courses/{{id}}">{{title}}</a></h2>
+        <p class="card-description">{{description}}</p>
+        <p class="card-meta">📅 {{startDate}} &ndash; {{endDate}}</p>
+        <p class="card-meta">📍 {{location}}</p>
+        <p class="card-meta">🕐 {{sessionsCount}} session(s) &middot; Next: {{nextSession}}</p>
+        {{#allowDropIn}}<p class="card-meta" style="color:var(--sage-dark)">✓ Drop-in available &pound;{{dropInPrice}}</p>{{/allowDropIn}}
+        <div class="card-actions">
+          <a href="/courses/{{id}}" class="btn btn-primary">View &amp; Book</a>
+        </div>
+      </div>
+    </article>
+    {{/courses}}
+
+    {{^courses}}
+    <div class="empty-state">
+      <p>No courses available yet.</p>
+    </div>
+    {{/courses}}
+  </div>
 </div>
 
 {{> footer}}
-``

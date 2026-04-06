@@ -1,0 +1,56 @@
+{{> head}}
+{{> header}}
+
+<h1>My classes</h1>
+<p>Welcome, {{instructorName}}. Here are the classes you are scheduled to teach.</p>
+
+{{^hasClasses}}
+<div class="empty-state">
+  <p>You have no classes assigned yet.</p>
+  <a href="/" class="btn">Back to home</a>
+</div>
+{{/hasClasses}}
+
+{{#classes}}
+<div class="card">
+  <div class="card-body">
+    <div class="card-title-row">
+      <h2>{{title}}</h2>
+      <span class="badge">{{type}}</span>
+    </div>
+    <p class="card-meta">Level: {{level}}</p>
+    <p class="card-meta">Location: {{location}}</p>
+    <p class="card-meta">Total sessions: {{totalSessions}} &middot; Upcoming: {{upcomingSessions}}</p>
+    {{#hasNextSession}}
+    <p class="card-meta">Next session: <strong>{{nextSession}}</strong></p>
+    {{/hasNextSession}}
+    <details>
+      <summary class="card-meta" style="cursor:pointer">View all sessions</summary>
+      <table class="data-table" style="margin-top:0.5rem">
+        <thead>
+          <tr>
+            <th>Start</th>
+            <th>End</th>
+            <th>Booked</th>
+            <th>Capacity</th>
+            <th>Location</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#sessions}}
+          <tr {{#isPast}}style="opacity:0.5"{{/isPast}}>
+            <td>{{start}}</td>
+            <td>{{end}}</td>
+            <td>{{bookedCount}}</td>
+            <td>{{capacity}}</td>
+            <td>{{location}}</td>
+          </tr>
+          {{/sessions}}
+        </tbody>
+      </table>
+    </details>
+  </div>
+</div>
+{{/classes}}
+
+{{> footer}}

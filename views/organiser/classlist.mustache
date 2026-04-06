@@ -1,0 +1,46 @@
+{{> head}}
+{{> header}}
+
+<main class="container">
+  <div class="page-header">
+    <h1>Class list</h1>
+    <a href="/organiser" class="btn btn-sm">Back to dashboard</a>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <h2>{{course.title}}</h2>
+      <p class="card-meta">{{session.start}}</p>
+      <p class="card-meta">{{session.bookedCount}} / {{session.capacity}} places filled</p>
+    </div>
+  </div>
+
+  {{^isEmpty}}
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Booking type</th>
+        <th>Booked at</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#participants}}
+      <tr>
+        <td>{{name}}</td>
+        <td>{{email}}</td>
+        <td><span class="badge badge-{{type}}">{{type}}</span></td>
+        <td>{{bookedAt}}</td>
+      </tr>
+      {{/participants}}
+    </tbody>
+  </table>
+  {{/isEmpty}}
+
+  {{#isEmpty}}
+  <p class="empty-state">No bookings for this session yet.</p>
+  {{/isEmpty}}
+</main>
+
+{{> footer}}

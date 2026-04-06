@@ -1,17 +1,31 @@
-
 {{> head}}
 {{> header}}
 
-<h1>Booking Confirmation</h1>
-<p>Your booking has been created.</p>
+<main class="container">
+  <div class="confirmation-box">
+    <div class="confirmation-icon">&#10003;</div>
+    <h1>Booking confirmed</h1>
+    <p class="subheading">Your place has been reserved.</p>
 
-<dl class="kv">
-  <dt>ID</dt><dd>{{booking.id}}</dd>
-  <dt>Type</dt><dd>{{booking.type}}</dd>
-  <dt>Status</dt><dd>{{booking.status}}</dd>
-  <dt>Created</dt><dd>{{booking.createdAt}}</dd>
-</dl>
+    <div class="card">
+      <div class="card-body">
+        <h2>{{booking.courseTitle}}</h2>
+        {{#booking.isDropIn}}
+        <p class="card-meta">Drop-in session: <strong>{{booking.sessionDetail}}</strong></p>
+        {{/booking.isDropIn}}
+        {{^booking.isDropIn}}
+        <p class="card-meta">Full course enrolment</p>
+        {{/booking.isDropIn}}
+        <p class="card-meta">Status: <span class="badge badge-status-{{booking.status}}">{{booking.status}}</span></p>
+        <p class="card-meta">Booked at: {{booking.createdAt}}</p>
+      </div>
+    </div>
 
-<p><a class="btn" href></p>
+    <div class="confirmation-actions">
+      <a href="/bookings/my-bookings" class="btn btn-primary">View my bookings</a>
+      <a href="/" class="btn">Back to courses</a>
+    </div>
+  </div>
+</main>
 
-{{>
+{{> footer}}

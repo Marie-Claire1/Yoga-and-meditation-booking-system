@@ -1,4 +1,3 @@
-// controllers/bookingController.js
 import {
   bookCourseForUser,
   bookSessionForUser,
@@ -38,8 +37,8 @@ export const cancelBooking = async (req, res) => {
     if (booking.status === "CANCELLED") return res.json({ booking });
 
     if (booking.status === "CONFIRMED") {
-      for (const sid of booking.sessionIds) {
-        await SessionModel.incrementBookedCount(sid, -1);
+      if (booking.sessionId) {
+        await SessionModel.incrementBookedCount(booking.sessionId, -1);
       }
     }
     const updated = await BookingModel.cancel(bookingId);

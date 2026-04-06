@@ -1,13 +1,24 @@
 <header class="site-header">
   <div class="wrap">
-    🧘 Yoga Studio
+    <a class="brand" href="/">🧘 Yoga Studio</a>
     <nav>
-      <a> hrefs</a>
+      <a href="/">Home</a>
+      <a href="/courses">Courses</a>
+      {{#user}}
+        {{#isOrganiser}}
+          <a href="/organiser">Dashboard</a>
+        {{/isOrganiser}}
+        {{#isInstructor}}
+          <a href="/bookings/my-classes">My classes</a>
+        {{/isInstructor}}
+        <a href="/bookings/my-bookings">My Bookings</a>
+        <a href="/auth/logout">Logout</a>
+      {{/user}}
+      {{^user}}
+        <a href="/auth/login">Login</a>
+        <a href="/auth/register">Register</a>
+      {{/user}}
     </nav>
-    {{#user}}
-    <div class="user">
-      Signed in as <strong>{{ name }}</strong>
-    </div>
-    {{/user}}
   </div>
 </header>
+<main class="wrap">

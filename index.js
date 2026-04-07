@@ -32,10 +32,10 @@ app.use((req, res, next) => {
   next();
 });
 
-// ─── Rate limiting on login ────────────────────────────────────────────────
+// ─── Rate limiting — POST /auth/login only ────────────────────────────────
 const loginLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 50, // max 50 login attempts per 15 minutes
+  windowMs: 15 * 60 * 1000,
+  max: 20,
   message: "Too many login attempts. Please try again in 15 minutes.",
   standardHeaders: true,
   legacyHeaders: false,
@@ -77,7 +77,8 @@ app.use(attachUser);
 app.get("/health", (req, res) => res.json({ ok: true }));
 
 // ─── Routes ────────────────────────────────────────────────────────────────
-app.use("/auth", loginLimiter, authRoutes);
+app.use("/auth", authRoutes);
+app.post("/auth/login", loginLimiter);
 app.use("/api/courses", courseRoutes);
 app.use("/api/sessions", sessionRoutes);
 app.use("/bookings", bookingRoutes);

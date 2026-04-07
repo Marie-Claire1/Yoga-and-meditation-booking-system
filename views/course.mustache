@@ -20,11 +20,23 @@
   </div>
   {{/course.image}}
 
-  {{#course.studentDiscount}}
+  {{#isVerifiedStudent}}
   <div class="alert alert-success" style="margin-bottom:1rem">
-    ✓ Your 20% student discount has been applied to the prices shown below.
+    Your 20% student discount has been applied to the prices shown below.
   </div>
-  {{/course.studentDiscount}}
+  {{/isVerifiedStudent}}
+
+  {{#isUnverifiedStudent}}
+  <div class="alert" style="margin-bottom:1rem;background:#fef9e7;border-color:#f0d890;color:#8b6914">
+    Your student discount is pending verification by our team. Once verified you will receive 20% off all courses. Prices shown are standard rates.
+  </div>
+  {{/isUnverifiedStudent}}
+
+  {{^isLoggedIn}}
+  <div class="alert" style="margin-bottom:1rem;background:#f0f4ff;border-color:#a0c0f0;color:#1a4080">
+    Student members receive 20% off all courses. <a href="/auth/register">Register with a student account</a> to access discounted rates from &pound;{{course.discountedPrice}}.
+  </div>
+  {{/isLoggedIn}}
 
   <div class="card" style="margin-bottom:2rem">
     <div class="card-body">
@@ -37,15 +49,15 @@
         {{#course.allowDropIn}}&middot; Drop-in available at &pound;{{course.dropInPrice}}{{/course.allowDropIn}}
       </p>
       <p style="margin-top:0.75rem">{{course.description}}</p>
-      <p class="card-meta" style="margin-top:0.5rem">📅 {{course.startDate}} &ndash; {{course.endDate}}</p>
-      <p class="card-meta">📍 {{course.location}}</p>
-      <p class="card-meta">👤 Instructor: {{course.instructorName}}</p>
+      <p class="card-meta" style="margin-top:0.5rem">Dates: {{course.startDate}} &ndash; {{course.endDate}}</p>
+      <p class="card-meta">Location: {{course.location}}</p>
+      <p class="card-meta">Instructor: {{course.instructorName}}</p>
     </div>
   </div>
 
   {{#alreadyEnrolled}}
   <div class="alert alert-success" style="margin-bottom:1.5rem">
-    ✓ You are enrolled on this course.
+    You are enrolled on this course.
     <form action="/bookings/{{enrolmentId}}/cancel" method="POST" class="inline-form"
       onsubmit="return confirm('Are you sure you want to cancel your enrolment?')">
       <button type="submit" class="btn btn-sm btn-danger" style="margin-left:1rem">Cancel enrolment</button>
@@ -56,15 +68,15 @@
   {{#canBook}}
   <section class="booking-section">
     <h2>Book the full course</h2>
-    {{#course.studentDiscount}}
+    {{#isVerifiedStudent}}
     <p>Enrol on all sessions for <strong>&pound;{{course.price}}</strong> <span style="color:var(--sage-dark);font-size:0.875rem">(20% student discount applied)</span></p>
-    {{/course.studentDiscount}}
-    {{^course.studentDiscount}}
+    {{/isVerifiedStudent}}
+    {{^isVerifiedStudent}}
     <p>Enrol on all sessions for <strong>&pound;{{course.price}}</strong></p>
-    {{/course.studentDiscount}}
+    {{/isVerifiedStudent}}
     <form action="/bookings/courses/{{course.id}}/book" method="POST"
       onsubmit="return confirm('Confirm your booking for {{course.title}}? You can cancel at any time from My Bookings.')">
-      <button class="btn btn-primary" type="submit">Book full course</button>
+      <button class="btn btn-primary" type="submit">Book full course &rarr;</button>
     </form>
   </section>
   {{/canBook}}

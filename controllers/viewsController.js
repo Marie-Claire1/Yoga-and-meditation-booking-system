@@ -1,4 +1,3 @@
-// controllers/viewsController.js
 import { CourseModel } from "../models/courseModel.js";
 import { SessionModel } from "../models/sessionModel.js";
 import {
@@ -65,6 +64,7 @@ export const courseDetailPage = async (req, res, next) => {
     const sessions = await SessionModel.listByCourse(courseId);
 
     const isVerifiedStudent = req.user?.membershipType === "student" && req.user?.verified === true;
+    const isUnverifiedStudent = req.user?.membershipType === "student" && !req.user?.verified;
     const discount = isVerifiedStudent ? 0.8 : 1;
     const displayPrice = course.price ? (course.price * discount).toFixed(2) : null;
     const displayDropInPrice = course.dropInPrice ? (course.dropInPrice * discount).toFixed(2) : null;
@@ -91,6 +91,9 @@ export const courseDetailPage = async (req, res, next) => {
     const isOrganiser = req.user?.role === "organiser";
     const canBook = isLoggedIn && !isOrganiser && !alreadyEnrolled;
     const showDropIn = isLoggedIn && !isOrganiser && !alreadyEnrolled && course.allowDropIn === true;
+
+    const discountedPrice = course.price ? (course.price * 0.8).toFixed(2) : null;
+    const discountedDropInPrice = course.dropInPrice ? (course.dropInPrice * 0.8).toFixed(2) : null;
 
     const rows = sessions.map((s) => ({
       id: s._id,
@@ -125,6 +128,8 @@ export const courseDetailPage = async (req, res, next) => {
         location: course.location,
         price: displayPrice ?? course.price,
         dropInPrice: displayDropInPrice ?? course.dropInPrice,
+        discountedPrice,
+        discountedDropInPrice,
         studentDiscount: isVerifiedStudent,
         instructorName: course.instructorName ?? "TBC",
         image: course.image ?? null,
@@ -136,6 +141,8 @@ export const courseDetailPage = async (req, res, next) => {
       canBook,
       showDropIn,
       isLoggedIn,
+      isVerifiedStudent,
+      isUnverifiedStudent,
     });
   } catch (err) {
     next(err);

@@ -1,92 +1,120 @@
 {{> head}}
 {{> header}}
 
-<div class="page-header">
-  <h1>{{course.title}}</h1>
-</div>
+<div class="wrap">
 
-<div class="card">
-  <div class="card-body">
-    <p class="card-meta">Level: {{course.level}} &middot; Type: {{course.type}}
-      {{#course.allowDropIn}}&middot; Drop-in available{{/course.allowDropIn}}
-    </p>
-    <p>{{course.description}}</p>
-    <p class="card-meta">Dates: {{course.startDate}} &ndash; {{course.endDate}}</p>
-    <p class="card-meta">Location: {{course.location}}</p>
-    <p class="card-meta">Full course price: &pound;{{course.price}}
-      {{#course.allowDropIn}}&middot; Drop-in: &pound;{{course.dropInPrice}}{{/course.allowDropIn}}
-    </p>
-    {{#course.studentDiscount}}
-    <p class="card-meta badge badge-success">Student discount applied (20% off)</p>
-    {{/course.studentDiscount}}
+  {{#course.image}}
+  <div class="course-hero" style="margin-bottom:2rem">
+    <div class="course-hero-image" style="background-image:url('{{course.image}}')"></div>
+    <div class="course-hero-content">
+      <p class="hero-eyebrow">{{course.level}} &middot; {{course.type}}</p>
+      <h1>{{course.title}}</h1>
+      <p>{{course.location}}</p>
+    </div>
   </div>
+  {{/course.image}}
+
+  {{^course.image}}
+  <div class="page-header">
+    <h1>{{course.title}}</h1>
+  </div>
+  {{/course.image}}
+
+  {{#course.studentDiscount}}
+  <div class="alert alert-success" style="margin-bottom:1rem">
+    ✓ Your 20% student discount has been applied to the prices shown below.
+  </div>
+  {{/course.studentDiscount}}
+
+  <div class="card" style="margin-bottom:2rem">
+    <div class="card-body">
+      <div class="card-level-price">
+        <span class="level-badge {{course.level}}">{{course.level}}</span>
+        <span class="card-price">&pound;{{course.price}}</span>
+      </div>
+      <p class="card-meta" style="margin-top:0.5rem">
+        {{course.type}}
+        {{#course.allowDropIn}}&middot; Drop-in available at &pound;{{course.dropInPrice}}{{/course.allowDropIn}}
+      </p>
+      <p style="margin-top:0.75rem">{{course.description}}</p>
+      <p class="card-meta" style="margin-top:0.5rem">📅 {{course.startDate}} &ndash; {{course.endDate}}</p>
+      <p class="card-meta">📍 {{course.location}}</p>
+      <p class="card-meta">👤 Instructor: {{course.instructorName}}</p>
+    </div>
+  </div>
+
+  {{#alreadyEnrolled}}
+  <div class="alert alert-success" style="margin-bottom:1.5rem">
+    ✓ You are enrolled on this course.
+    <form action="/bookings/{{enrolmentId}}/cancel" method="POST" class="inline-form"
+      onsubmit="return confirm('Are you sure you want to cancel your enrolment?')">
+      <button type="submit" class="btn btn-sm btn-danger" style="margin-left:1rem">Cancel enrolment</button>
+    </form>
+  </div>
+  {{/alreadyEnrolled}}
+
+  {{#canBook}}
+  <section class="booking-section">
+    <h2>Book the full course</h2>
+    {{#course.studentDiscount}}
+    <p>Enrol on all sessions for <strong>&pound;{{course.price}}</strong> <span style="color:var(--sage-dark);font-size:0.875rem">(20% student discount applied)</span></p>
+    {{/course.studentDiscount}}
+    {{^course.studentDiscount}}
+    <p>Enrol on all sessions for <strong>&pound;{{course.price}}</strong></p>
+    {{/course.studentDiscount}}
+    <form action="/bookings/courses/{{course.id}}/book" method="POST"
+      onsubmit="return confirm('Confirm your booking for {{course.title}}? You can cancel at any time from My Bookings.')">
+      <button class="btn btn-primary" type="submit">Book full course</button>
+    </form>
+  </section>
+  {{/canBook}}
+
+  {{^isLoggedIn}}
+  <div class="alert" style="margin-bottom:1.5rem">
+    <a href="/auth/login">Log in</a> or <a href="/auth/register">register</a> to book this course.
+  </div>
+  {{/isLoggedIn}}
+
+  <section class="sessions-section">
+    <h2>Sessions</h2>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Start</th>
+          <th>End</th>
+          <th>Capacity</th>
+          <th>Remaining</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#sessions}}
+        <tr>
+          <td>{{start}}</td>
+          <td>{{end}}</td>
+          <td>{{capacity}}</td>
+          <td>{{remaining}}</td>
+          <td>
+            {{#showDropIn}}
+              {{#alreadyBooked}}
+                <span class="badge badge-status-confirmed">Already booked</span>
+              {{/alreadyBooked}}
+              {{^alreadyBooked}}
+                <form method="POST" action="/bookings/sessions/{{id}}/book"
+                  onsubmit="return confirm('Confirm your booking for this session? You can cancel at any time from My Bookings.')">
+                  <button class="btn btn-sm btn-primary" type="submit" {{#isFull}}disabled{{/isFull}}>
+                    {{#isFull}}Full{{/isFull}}{{^isFull}}Book session{{/isFull}}
+                  </button>
+                </form>
+              {{/alreadyBooked}}
+            {{/showDropIn}}
+          </td>
+        </tr>
+        {{/sessions}}
+      </tbody>
+    </table>
+  </section>
+
 </div>
-
-{{#alreadyEnrolled}}
-<div class="alert alert-success">
-  You are enrolled on this course.
-  <form action="/bookings/{{enrolmentId}}/cancel" method="POST" class="inline-form"
-    onsubmit="return confirm('Are you sure you want to cancel your enrolment?')">
-    <button type="submit" class="btn btn-sm btn-danger">Cancel enrolment</button>
-  </form>
-</div>
-{{/alreadyEnrolled}}
-
-{{#canBook}}
-<section class="booking-section">
-  <h2>Book the full course</h2>
-  <p>Enrol on all sessions for &pound;{{course.price}}</p>
-  <form action="/bookings/courses/{{course.id}}/book" method="POST"
-    onsubmit="return confirm('Confirm your booking for {{course.title}}? You can cancel at any time from My Bookings.')">
-    <button class="btn btn-primary" type="submit">Book full course</button>
-  </form>
-</section>
-{{/canBook}}
-
-{{^isLoggedIn}}
-<div class="alert">
-  <a href="/auth/login">Log in</a> or <a href="/auth/register">register</a> to book this course.
-</div>
-{{/isLoggedIn}}
-
-<section class="sessions-section">
-  <h2>Sessions</h2>
-  <table class="data-table">
-    <thead>
-      <tr>
-        <th>Start</th>
-        <th>End</th>
-        <th>Capacity</th>
-        <th>Remaining</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      {{#sessions}}
-      <tr>
-        <td>{{start}}</td>
-        <td>{{end}}</td>
-        <td>{{capacity}}</td>
-        <td>{{remaining}}</td>
-        <td>
-          {{#showDropIn}}
-            {{#alreadyBooked}}
-              <span class="muted">Already booked</span>
-            {{/alreadyBooked}}
-            {{^alreadyBooked}}
-              <form method="POST" action="/bookings/sessions/{{id}}/book"
-                onsubmit="return confirm('Confirm your booking for this session? You can cancel at any time from My Bookings.')">
-                <button class="btn btn-sm" type="submit" {{#isFull}}disabled{{/isFull}}>
-                  {{#isFull}}Full{{/isFull}}{{^isFull}}Book session{{/isFull}}
-                </button>
-              </form>
-            {{/alreadyBooked}}
-          {{/showDropIn}}
-        </td>
-      </tr>
-      {{/sessions}}
-    </tbody>
-  </table>
-</section>
 
 {{> footer}}

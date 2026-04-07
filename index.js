@@ -35,7 +35,7 @@ app.use((req, res, next) => {
 // ─── Rate limiting on login ────────────────────────────────────────────────
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 10, // max 10 login attempts per 15 minutes
+  max: 50, // max 50 login attempts per 15 minutes
   message: "Too many login attempts. Please try again in 15 minutes.",
   standardHeaders: true,
   legacyHeaders: false,

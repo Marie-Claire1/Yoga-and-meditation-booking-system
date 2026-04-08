@@ -1,7 +1,2 @@
 {"$$indexCreated":{"fieldName":"email","unique":true,"sparse":false}}
-{"name":"Marie-Claire","email":"marie-claire@yogastudio.com","passwordHash":"$2b$12$xnB3uGVj6mOUnGAAwm35BevaV0tEzv0XbuA.m7iRV95TgMOENcil6","role":"organiser","membershipType":"full","verified":true,"_id":"tw1XJLq7tpaQxK9p"}
-{"name":"Ava Thompson","email":"ava@yogastudio.com","passwordHash":"$2b$12$9YBLDomVIJQrHI0yNEdyj.OLVKRlu.BcE7P0KylH2G1ZIgXRVs/fW","role":"instructor","membershipType":"full","verified":true,"_id":"4wZt5rMMNkFEFu5z"}
-{"name":"Ben Walsh","email":"ben@yogastudio.com","passwordHash":"$2b$12$cv5hpyINBEXTw1WmKuwSIeniaSQyZHm6uarcufShWnppzLERQg8em","role":"instructor","membershipType":"full","verified":true,"_id":"peZ9i11jsZsaoPiT"}
-{"name":"Priya Sharma","email":"priya@yogastudio.com","passwordHash":"$2b$12$DkpvAZYtNLy066HBOR6O3urUuKtp1jtegxZeCHdw4TBFKXp7/oNyC","role":"instructor","membershipType":"full","verified":true,"_id":"ZKfiCjPNdgcBLSvz"}
-{"name":"Sarah","email":"sarah@student.local","passwordHash":"$2b$12$1W3jbi3NQhnzlUMREnUw2OCeGtdOcuZYMF3A4LlXqB0Iaz/YwQ/6O","role":"student","membershipType":"full","verified":true,"_id":"kxmlnkpCdi35NfpN"}
-{"name":"Stewart Smith","email":"stewart@student.local","passwordHash":"$2b$12$DnTKQWz0hD8cXALXfyj4SONqc/AZXpz0A2tEJAQvkF65zwWuL96kC","role":"student","membershipType":"full","verified":true,"_id":"nfxS1r27U1ddceyw"}
+{"$$indexCreated":{"fieldName":"email","unique":true}}

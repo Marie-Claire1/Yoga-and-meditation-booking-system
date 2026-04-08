@@ -166,7 +166,7 @@ async function run() {
     instructorId: ava._id,
     instructorName: ava.name,
     location: STUDIO_LOCATION,
-    image: "https://www.pexels.com/photo/woman-in-black-leggings-doing-yoga-3822690/",
+    image: "/static/images/hatha.jpg",
     sessions: weeklySlots("2026-04-07", 12, 9, 30, 60).map((s) => ({ ...s, capacity: 20 })),
   });
 
@@ -327,7 +327,7 @@ async function run() {
     instructorId: priya._id,
     instructorName: priya.name,
     location: ONLINE,
-    image: "https://images.unsplash.com/photo-1602192509154-0b900ee1f851?w=800&auto=format&fit=crop&q=80",
+    image: "/static/images/advancesbreathworkandsomatichealing.jpg",
     sessions: weeklySlots("2026-05-05", 6, 19, 30, 90).map((s) => ({ ...s, capacity: 10 })),
   });
 
@@ -344,7 +344,7 @@ async function run() {
     instructorId: priya._id,
     instructorName: priya.name,
     location: STUDIO_LOCATION,
-    image: "https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=800&auto=format&fit=crop&q=80",
+    image: "/static/images/advancedmeditationandretreatweekend.jpg",
     sessions: workshopSlots("2026-06-20", 5, 8, 120).map((s) => ({ ...s, capacity: 10 })),
   });
 

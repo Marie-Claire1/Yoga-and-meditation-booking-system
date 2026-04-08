@@ -1,4 +1,3 @@
-// routes/organiser.js
 import { Router } from "express";
 import { requireOrganiser } from "../middlewares/requireAuth.js";
 import { CourseModel } from "../models/courseModel.js";
@@ -13,30 +12,32 @@ router.use(requireOrganiser);
 function autoAssignImage(title, level) {
   const t = title.toLowerCase();
   if (t.includes("hatha"))
-    return "https://images.unsplash.com/photo-1599447421416-3414500d18a5?w=800&auto=format&fit=crop&q=80";
+    return "/static/images/hatha.jpg";
   if (t.includes("vinyasa") || t.includes("flow"))
     return "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&auto=format&fit=crop&q=80";
   if (t.includes("meditation") || t.includes("mindful") || t.includes("mindfulness"))
     return "https://images.unsplash.com/photo-1545389336-cf090694435e?w=800&auto=format&fit=crop&q=80";
   if (t.includes("breathwork") || t.includes("pranayama"))
-    return "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&auto=format&fit=crop&q=80";
+    return "/static/images/advancesbreathworkandsomatichealing.jpg";
   if (t.includes("bikram") || t.includes("hot yoga"))
     return "https://images.unsplash.com/photo-1588286840104-8957b019727f?w=800&auto=format&fit=crop&q=80";
   if (t.includes("zen"))
     return "https://images.unsplash.com/photo-1508672019048-805c876b67e2?w=800&auto=format&fit=crop&q=80";
   if (t.includes("transcendental"))
     return "https://images.unsplash.com/photo-1474418397713-7ede21d49118?w=800&auto=format&fit=crop&q=80";
-  if (t.includes("workshop") || t.includes("retreat"))
+  if (t.includes("retreat"))
+    return "/static/images/advancedmeditationandretreatweekend.jpg";
+  if (t.includes("workshop"))
     return "https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?w=800&auto=format&fit=crop&q=80";
   if (t.includes("somatic") || t.includes("healing"))
-    return "https://images.unsplash.com/photo-1602192509154-0b900ee1f851?w=800&auto=format&fit=crop&q=80";
+    return "/static/images/advancesbreathworkandsomatichealing.jpg";
   if (t.includes("puppy") || t.includes("dog"))
-    return "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800&auto=format&fit=crop&q=80";
+    return "/static/images/puppyyoga.jpg";
   if (level === "beginner")
     return "https://images.unsplash.com/photo-1593811167562-9cef47bfc4d7?w=800&auto=format&fit=crop&q=80";
   if (level === "advanced")
     return "https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=800&auto=format&fit=crop&q=80";
-  return "https://images.unsplash.com/photo-1599447421416-3414500d18a5?w=800&auto=format&fit=crop&q=80";
+  return "/static/images/hatha.jpg";
 }
 
 // ─── Dashboard home ────────────────────────────────────────────────────────
